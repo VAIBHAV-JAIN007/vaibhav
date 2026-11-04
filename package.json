@@ -1,0 +1,11 @@
+{
+  "name": "global-ai-trading-intelligence",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check src/indicators.js && node --check src/risk-engine.js && node --check src/scanner.js"
+  },
+  "engines": { "node": ">=20" }
+}
