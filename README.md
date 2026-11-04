@@ -1,28 +1,25 @@
 # Global AI Trading Intelligence
 
-Browser-based live crypto dashboard using Binance public REST and WebSocket market data.
+A responsive trading research platform with a browser dashboard and a separately runnable FastAPI + PostgreSQL backend.
 
-## Deployment
-Enable GitHub Pages with **Settings → Pages → Build and deployment → GitHub Actions**. The workflow deploys the repository root after each push to `main`. Check the Actions tab for the result and Pages URL.
+## Start the complete local stack
+1. Install Docker Desktop.
+2. In the repository folder, copy `.env.example` to `.env`.
+3. Replace `POSTGRES_PASSWORD` and `JWT_SECRET` with strong random values.
+4. Run `docker compose up --build`.
+5. Open API docs at http://localhost:8000/docs and health at http://localhost:8000/health.
+6. Open `index.html` using a local static web server (for example, `python -m http.server 8080`) and visit http://localhost:8080. GitHub Pages deploys the static frontend automatically when Pages is enabled.
 
-## Current implemented scope
-- Live Binance spot dashboard with candle chart and WebSocket updates
-- Shared indicator library: EMA, SMA, RSI, MACD and ATR
-- Rule-based signal classification with reasons and uncertainty labels
-- Candle scanner for breakout, momentum and volume spikes
-- Position sizing calculator with risk amount and risk/reward
-- Automated Node.js smoke tests and syntax checks in GitHub Actions
-- Binance spot ticker, candle history and WebSocket updates
-- Price chart with EMA 9/21
-- Browser-calculated RSI(14), MACD and ATR(14)
-- Transparent rule-based BUY/SELL/HOLD educational signal
-- Small market watch and local browser research notes
+## Included
+- Binance spot price/candles and WebSocket dashboard.
+- EMA/SMA/RSI/MACD/ATR analysis, rule-based signal explanations and candle scanner.
+- Position risk calculator.
+- FastAPI registration/login, JWT-protected manual portfolio and trading journal.
+- SQLAlchemy data models, PostgreSQL and Docker Compose.
+- Market coverage endpoint with explicit provider availability status.
+- GitHub Actions tests for frontend and backend.
 
-## Limitations
-This is a starter crypto dashboard, not the complete global AI trading platform. It does not provide NSE/BSE or US equity feeds, options/OI/Greeks, news sentiment, a private AI model, backend, database, multi-user accounts, admin, subscriptions or broker execution. Real-time exchange data access and redistribution can require licensed providers. Signals are educational, not financial advice. Feed failure is reported, never replaced with invented prices.
+## Data and deployment limitations
+NSE/BSE, US equities, options chain/OI/PCR/Greeks, news sentiment and model-backed AI require suitable providers, credentials and possibly redistribution licences. They are not represented as live until configured. GitHub Pages hosts only static frontend files; the API and database run separately through Docker or a hosting provider. No broker order execution is included.
 
-
-Deployment check retriggered after Pages settings confirmation.
-
-## Run checks in GitHub
-Every push to `main` triggers `.github/workflows/ci.yml` (Node.js tests and syntax checks) and the Pages deployment workflow. Open the repository's **Actions** tab to inspect each run. GitHub Pages hosts the static frontend only; the API/backend and database are not deployed by this workflow.
+See [platform scope](docs/PLATFORM_SCOPE.md), [API guide](docs/API.md) and [data provider guide](docs/DATA_PROVIDERS.md).
