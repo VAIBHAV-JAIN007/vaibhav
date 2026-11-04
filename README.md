@@ -128,3 +128,21 @@ GitHub Actions also runs frontend and backend tests on pushes.
 GitHub Pages can host only the static frontend. The FastAPI API and PostgreSQL database must run on a separate server/hosting provider with HTTPS, persistent storage, backups, environment secrets, monitoring and appropriate access controls. Set the frontend API URL to the deployed HTTPS API URL and configure that exact frontend origin in backend CORS settings.
 
 No direct broker order placement is included. This is a research and decision-support tool, not financial advice.
+
+## 8. One-command Windows setup and testing
+
+After extracting/cloning the repository, open PowerShell in the project root and run:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\RUN-LOCAL-WINDOWS.ps1
+```
+
+The script creates a local `.env` with generated random secrets if it does not exist, builds and starts PostgreSQL + FastAPI, runs frontend tests and syntax checks, creates a Python virtual environment, installs backend dependencies, runs backend pytest, starts the frontend server on port 8080, and performs live provider smoke tests. Provider smoke tests may show warnings if a public provider rate-limits or blocks requests; those warnings do not mean the unit tests failed.
+
+When it finishes, open:
+- Frontend: http://localhost:8080
+- API docs: http://localhost:8000/docs
+- Health: http://localhost:8000/health
+
+If Docker fails, inspect `docker compose logs --tail=100`. To stop the API/database, run `docker compose down`. The frontend static server can be stopped from its PowerShell process/window.
