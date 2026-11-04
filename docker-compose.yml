@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: gati
+      POSTGRES_USER: gati
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local_only_change_me}
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gati -d gati"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://gati:${POSTGRES_PASSWORD:-local_only_change_me}@db:5432/gati
+      JWT_SECRET: ${JWT_SECRET:-local_only_change_me_before_deploy}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8000}
+    ports: ["8000:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  postgres_data:
