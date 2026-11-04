@@ -14,3 +14,6 @@ Enable GitHub Pages with **Settings → Pages → Build and deployment → GitHu
 
 ## Limitations
 This is a starter crypto dashboard, not the complete global AI trading platform. It does not provide NSE/BSE or US equity feeds, options/OI/Greeks, news sentiment, a private AI model, backend, database, multi-user accounts, admin, subscriptions or broker execution. Real-time exchange data access and redistribution can require licensed providers. Signals are educational, not financial advice. Feed failure is reported, never replaced with invented prices.
+
+
+Deployment check retriggered after Pages settings confirmation.
