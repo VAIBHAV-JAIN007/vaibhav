@@ -1,0 +1,10 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {ema,rsi,macd} from "../src/indicators.js";
+import {riskPlan,classifySignal} from "../src/risk-engine.js";
+test("EMA returns aligned series and seeds with SMA",()=>{const v=ema([1,2,3,4],3);assert.deepEqual(v.slice(0,2),[null,null]);assert.equal(v[2],2);});
+test("RSI is 100 for a strictly rising series",()=>{const v=rsi(Array.from({length:20},(_,i)=>i+1));assert.equal(v.at(-1),100);});
+test("MACD returns line, signal and histogram",()=>{const m=macd(Array.from({length:60},(_,i)=>100+i));assert.equal(m.line.length,60);assert.ok(m.histogram.at(-1)>0);});
+test("risk sizing caps loss at selected risk amount",()=>{const p=riskPlan({capital:100000,riskPercent:1,entry:100,stop:95,target:115});assert.equal(p.quantity,200);assert.equal(p.riskReward,3);});
+test("invalid long stop is rejected",()=>{assert.throws(()=>riskPlan({capital:10000,riskPercent:1,entry:100,stop:101,target:110}));});
+test("signal waits when indicators are missing",()=>{assert.equal(classifySignal({price:1}).action,"WAIT");});
