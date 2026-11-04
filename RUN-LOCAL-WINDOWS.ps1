@@ -22,10 +22,10 @@ if ($Failures -gt 0) { throw "Start Docker Desktop and rerun this script." }
 Say "Create secure local environment"
 if (!(Test-Path ".env")) {
   $bytes = New-Object byte[] 48
-  [System.Security.Cryptography.RandomNumberGenerator]::Fill($bytes)
+  $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create(); $rng.GetBytes($bytes)
   $jwt = [Convert]::ToBase64String($bytes).Replace("+","-").Replace("/","_").TrimEnd("=")
   $bytes2 = New-Object byte[] 32
-  [System.Security.Cryptography.RandomNumberGenerator]::Fill($bytes2)
+  $rng.GetBytes($bytes2); $rng.Dispose()
   $db = [Convert]::ToBase64String($bytes2).Replace("+","-").Replace("/","_").TrimEnd("=")
   @("POSTGRES_PASSWORD=$db","JWT_SECRET=$jwt","CORS_ORIGINS=http://localhost:8000,http://localhost:8080,https://vaibhav-jain007.github.io") | Set-Content -Encoding ascii ".env"
   Write-Host "[PASS] Created .env with random local secrets" -ForegroundColor Green
